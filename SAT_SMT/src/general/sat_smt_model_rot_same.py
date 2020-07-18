@@ -70,11 +70,11 @@ if s.check() == sat:
     x_eval = [ m.evaluate(x[i]) for i in range(n) ]
     y_eval = [ m.evaluate(y[i]) for i in range(n) ]
     rot_eval = [ m.evaluate(rot[i]) for i in range(n) ]
-    print(x_eval)
-    print(y_eval)
-    print(rot_eval)
+    print('x = ' + str(x_eval))
+    print('y = ' + str(y_eval))
+    print('rot = ' + str(rot_eval))
 else:
-    print("failed to solve")
+    print("Failed to solve")
 
 # Print output file
 output = str(w) + ' ' + str(h) + '\n' + str(n) + '\n' 

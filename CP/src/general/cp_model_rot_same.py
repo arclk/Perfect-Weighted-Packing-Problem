@@ -9,7 +9,7 @@ from show_pwp import show_pwp
 
 # Read the file
 dim = sys.argv[1]
-filepath = '../../Instances/' + str(dim) + 'x' + str(dim) + '.txt'
+filepath = './' + str(dim) + 'x' + str(dim) + '.txt'
 with open(filepath, 'r') as file:
     data = file.read()
     file.close()
@@ -29,7 +29,7 @@ p_height = list(map(int, l[:,1]))
 
 
 # Load model from file
-pwp = Model("./PWP.mzn")
+pwp = Model("./PWP_rot.mzn")
 # Find the MiniZinc solver configuration for Gecode
 gecode = Solver.lookup("gecode")
 # Create an Instance of the PWP model for Gecode
@@ -43,29 +43,29 @@ instance["p_height"] = p_height
 res: Result = instance.solve()
 
 if not(res.solution):
-    print('Failed to solve')
+  print('Failed to solve')
 else:
-    print(res.solution)
-    x = res.__getitem__('x')
-    y = res.__getitem__('y')
+  print(res.solution)
+  x = res.__getitem__('x')
+  y = res.__getitem__('y')
+  rot = res.__getitem__('rot')
 
-    # Write the pwp.txt file
-    output = str(w) + ' ' + str(h) + '\n' + str(n) + '\n' 
-    for i in range(n):
+  # Write the pwp.txt file
+  output = str(w) + ' ' + str(h) + '\n' + str(n) + '\n' 
+  for i in range(n):
+      if(rot[i]):
+        output = output + str(p_height[i]) + ' ' + str(p_width[i]) + ' ' + str(x[i]) + ' ' + str(y[i]) + '\n'
+      else:
         output = output + str(p_width[i]) + ' ' + str(p_height[i]) + ' ' + str(x[i]) + ' ' + str(y[i]) + '\n'
-    filepath_out = '../out/' + str(dim) + 'x' + str(dim) + '-out.txt'
-    with open('pwp.txt', 'w') as file:
-        file.write(output)
-        file.close()
-    # with open(filepath_out, 'w') as file:
-    #     file.write(output)
-    #     file.close()
+  filepath_out = '../out/' + str(dim) + 'x' + str(dim) + '-out.txt'
+  with open('pwp.txt', 'w') as file:
+      file.write(output)
+      file.close()
 
-    # Print the statistics
-    for value in res.statistics:
-        print(value + ": " + str(res.statistics[value]))
+  # Print the statistics
+  for value in res.statistics:
+    print(value + ": " + str(res.statistics[value]))
 
-    # Show the result
-    show_pwp('pwp.txt')
-
+  # Show the result
+  show_pwp('pwp.txt')
 

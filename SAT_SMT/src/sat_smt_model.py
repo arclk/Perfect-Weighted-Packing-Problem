@@ -25,11 +25,7 @@ l = np.array(l)
 p_w = list(map(int, l[:,0]))
 p_h = list(map(int, l[:,1]))
 
-# h = 8
-# w = 8
-# n = 4
-# p_w = [3, 3, 5, 5]
-# p_h = [3, 5, 3, 5]
+
 x = [ Int('x_%i' % (i + 1)) for i in range(n) ]
 y = [ Int('y_%i' % (i + 1)) for i in range(n) ]
 
@@ -58,10 +54,10 @@ if s.check() == sat:
     m = s.model()
     x_eval = [ m.evaluate(x[i]) for i in range(n) ]
     y_eval = [ m.evaluate(y[i]) for i in range(n) ]
-    print(x_eval)
-    print(y_eval)
+    print('x = ' + str(x_eval))
+    print('y = ' + str(y_eval))
 else:
-    print("failed to solve")
+    print("Failed to solve")
 
 # Print output file
 output = str(w) + ' ' + str(h) + '\n' + str(n) + '\n' 
